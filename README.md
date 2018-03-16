@@ -24,10 +24,10 @@ GameState
 	Points
 
 Input
-  Getcurrent pressed button
+	Getcurrent pressed button
 
 Board
-  Gameboard // Array of boardstate
+	Gameboard // Array of boardstate
 	Draw gameboard() // Draw the current state of the gameboard
 	Treasure positions // Position on the board
 	Laser positions // Position on the board
@@ -43,7 +43,7 @@ Laser
 	X/Y position // Position on the board
 	On/Off // Boolean if the laser is on or off
 	Beam() // Draw the beam on the gameboard
-  CheckTime() // Checks if laser need to turn on
+	CheckTime() // Checks if laser need to turn on
 	
 Treasure
 	Point value // Treasure Score value (If we want diffrent treasures to have diffrent values)
@@ -53,7 +53,7 @@ Treasure
 If we want diffrent levels we need to inject gameboard state when starting the game in gamestate.
 
 ----
-
+<pre>
 while game is on
   check for inputs
   if input
@@ -62,3 +62,4 @@ while game is on
       handle collision
   check laser time
   wait
+</pre>
