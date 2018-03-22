@@ -1,27 +1,58 @@
 package tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import settings.Settings;
 
 class SettingsTests {
 
 	@Test
-	@DisplayName("Create window and get the default height")
+	@DisplayName("get the default height")
 	void getHeigth_expect1024() {
 		
-		Settings w = new Settings();
-		int height = w.getHeight();
-		assertEquals(height, 1024);
+		Settings s = new Settings();
+		int height = s.getHeight();
+		System.out.println(height);	
+		assertEquals(768, height);
 	}
 	
 	@Test
-	@DisplayName("Create window and get the default width")
+	@DisplayName("get the default width")
 	void getWidth_expect728() {
-		Settings w = new Settings();
-		int width = w.getWidth();
-		assertEquals(width, 728);
+		
+		Settings s = new Settings();
+		int width = s.getWidth();
+		assertEquals(1024, width);
 	}
+	
+	@Test
+	@DisplayName("get the default offsetX")
+	void getOffsetX_expect212() {
+		
+		Settings s = new Settings();
+		int offset = s.getOffsetX();
+		assertEquals(212, offset);
+	}
+	
+	@Test
+	@DisplayName("get the default offsetY")
+	void getOffsetY_expect144() {
+		
+		Settings s = new Settings();
+		int offset = s.getOffsetY();
+		assertEquals(144, offset);
+	}
+	
+	@Test
+	@DisplayName("get the default tilesize")
+	void getTileSize_expect24() {
+		
+		Settings s = new Settings();
+		int tileSize = s.getTileSize();
+		assertEquals(24, tileSize);
+	}
+	
+	
 }
