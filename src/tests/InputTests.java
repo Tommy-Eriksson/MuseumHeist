@@ -6,8 +6,18 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import handler.InputHandler;
 
+
+/**
+ * The Class InputTests holds the unit tests on which the class InputHandler is built.
+ * 
+ * @author Malin Albinsson
+ * @version 1.0
+ */
 class InputTests {
 
+	/**
+	 * AddKey should add key code of pressed key to array list keys: key code string added last in array list keys expected.
+	 */
 	@Test
 	void addKey_shouldAddKeyCodeOfPressedKeyToArrayListKeys_keyCodeStringAddedLastInArrayListKeys() {
 	// Arrange
@@ -25,6 +35,9 @@ class InputTests {
 			assertEquals(expectedArray, resultArray);
 	}
 	
+	/**
+	 * AddKey should add key code of pressed key to array list keys only if key not already activated: added key code expected.
+	 */
 	@Test
 	void addKey_shouldAddKeyCodeOfPressedKeyToArrayListKeysOnlyIfKeyNotAlreadyActivated_addedKeyCodeExpected() {
 	// Arrange
@@ -52,6 +65,9 @@ class InputTests {
 		assertEquals(expectedArray, resultArray);
 	}
 	
+	/**
+	 * AddKey should add key code of pressed key to array list keys only if key not already activated: no add of key code expected.
+	 */
 	@Test
 	void addKey_shouldAddKeyCodeOfPressedKeyToArrayListKeysOnlyIfKeyNotAlreadyActivated_NoAddOfKeyCodeExpected() {
 	// Arrange
@@ -78,6 +94,9 @@ class InputTests {
 		assertEquals(expectedArray, resultArray);
 	}
 	
+	/**
+	 * RemoveKey should remove key code from array list keys: key code string removed from array list keys expected.
+	 */
 	@Test 
 	void removeKey_shouldRemoveKeyCodeFromArrayListKeys_keyCodeStringRemovedFromArrayListKeys() {
 	// Arrange
@@ -102,6 +121,9 @@ class InputTests {
 	}
 	
 	
+	/**
+	 * KeyActivated should if key code is in list return true: true expected.
+	 */
 	@Test
 	void keyActivated_shouldIfKeyCodeInListReturnTrue_TrueExpected() {
 		// Arrange
@@ -116,6 +138,9 @@ class InputTests {
 		assertTrue (input.keyActivated(keyCode));
 	}
 	
+	/**
+	 * keyActivated should if key code not in list return false: false expected.
+	 */
 	@Test
 	void keyActivated_shouldIfKeyCodeNotInListReturnFalse_FalseExpected() {
 		// Arrange
