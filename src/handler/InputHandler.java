@@ -25,10 +25,11 @@ public class InputHandler {
 	}
 
 	public ArrayList<String> addKey(String keyCode) {
-		if(keyActivated(keyCode))
-			throw new IllegalArgumentException("Key already activated");
-		else if(!keyActivated(keyCode))
+		if(!keyActivated(keyCode)) {
 			keys.add(keyCode);
+		return keys;
+		} 
+		else
 		return keys;
 	}
 
