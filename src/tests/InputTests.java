@@ -6,19 +6,21 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
+import handler.InputHandler;
+
 class InputTests {
 
 	@Test
-	void addKey_shouldAddKeyCodeToArrayListKeys_keyCodeStringAddedLastInArrayListKeys() {
+	void addKey_shouldAddKeyCodeOfPressedKeyToArrayListKeys_keyCodeStringAddedLastInArrayListKeys() {
 	// Arrange
-	Input input = new Input();
+	InputHandler input = new InputHandler();
 	
 	ArrayList<String> expectedArray = new ArrayList<String>();
 	String keyCode="+";
 	expectedArray.add(keyCode);
 	
 	// Act
-	ArrayList<String> resultArray = input.keys; 
+	ArrayList<String> resultArray = input.getKeys(); 
 	resultArray = input.addKey(keyCode);
 	
 	// Assert
@@ -26,16 +28,26 @@ class InputTests {
 	}
 	
 	@Test 
-	// TODO How should ArrayList keys work? Can the same keycode be found in more than one position in the list?
 	void removeKey_shouldRemoveKeyCodeFromArrayListKeys_keyCodeStringRemovedFromArrayListKeys() {
 	// Arrange
-		fail("Not yet implemented");
-	// Arrange
+		InputHandler input = new InputHandler();
+		
+		ArrayList<String> expectedArray = new ArrayList<String>();
+		expectedArray.add("E");
+		expectedArray.add("-");
+		expectedArray.add("T");
+		
+		ArrayList<String> resultArray = input.getKeys(); 
+		resultArray.add("E");
+		resultArray.add("+");
+		resultArray.add("-");
+		resultArray.add("T");
 	
 	// Act
-	
+		String keyCode="+";
+		resultArray = input.removeKey(keyCode);
 	// Assert
-	 
+		assertEquals(expectedArray, resultArray);
 	}
 	
 	@Test
