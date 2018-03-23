@@ -3,9 +3,7 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
-
 import handler.InputHandler;
 
 class InputTests {
@@ -50,15 +48,33 @@ class InputTests {
 		assertEquals(expectedArray, resultArray);
 	}
 	
+	
 	@Test
-	void getKeys_shouldGetKeyCodeFromArrayListKeys_keyCodesFromArrayListKeysReturned() {
-		fail("Not yet implemented");
-	// Arrange
+	void keyActivated_shouldIfKeyCodeInListReturnTrue_TrueExpected() {
+		// Arrange
+			InputHandler input = new InputHandler();
+			ArrayList<String> resultArray = input.getKeys(); 
+			resultArray.add("E");
+			resultArray.add("+");
+			resultArray.add("-");
+			resultArray.add("T");
+		// Act/Assert
+			String keyCode="+";
+		assertTrue (input.keyActivated(keyCode));
+	}
 	
-	// Act
-	
-	// Assert
-	 
+	@Test
+	void keyActivated_shouldIfKeyCodeNotInListReturnFalse_FalseExpected() {
+		// Arrange
+			InputHandler input = new InputHandler();
+			ArrayList<String> resultArray = input.getKeys(); 
+			resultArray.add("E");
+			resultArray.add("+");
+			resultArray.add("-");
+			resultArray.add("T");
+		// Act/Assert
+			String keyCode="*";
+		assertFalse (input.keyActivated(keyCode));
 	}
 		
 	/*

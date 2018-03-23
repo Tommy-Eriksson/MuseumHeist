@@ -34,4 +34,11 @@ public class InputHandler {
 		return keys;
 	}
 
+	public boolean keyActivated(String keyCode) {
+		if(keys.contains(keyCode)) {
+		return true;
+		}
+		return false;
+	}
+
 }
