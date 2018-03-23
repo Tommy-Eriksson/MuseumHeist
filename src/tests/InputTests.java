@@ -52,6 +52,32 @@ class InputTests {
 		assertEquals(expectedArray, resultArray);
 	}
 	
+	@Test
+	void addKey_shouldAddKeyCodeOfPressedKeyToArrayListKeysOnlyIfKeyNotAlreadyActivated_NoAddOfKeyCodeExpected() {
+	// Arrange
+		InputHandler input = new InputHandler();
+		
+		String keyCode = "*";
+		
+		ArrayList<String> expectedArray = new ArrayList<String>();
+		expectedArray.add("+");
+		expectedArray.add("E");
+		expectedArray.add("*");
+		expectedArray.add("T");
+		
+		ArrayList<String> resultArray = input.getKeys(); 
+		resultArray.add("+");
+		resultArray.add("E");
+		resultArray.add("*");
+		resultArray.add("T");
+
+	// Act	
+		resultArray = input.addKey(keyCode);
+	
+	// Assert
+		assertEquals(expectedArray, resultArray);
+	}
+	
 	@Test 
 	void removeKey_shouldRemoveKeyCodeFromArrayListKeys_keyCodeStringRemovedFromArrayListKeys() {
 	// Arrange
@@ -104,16 +130,5 @@ class InputTests {
 		assertFalse (input.keyActivated(keyCode));
 	}
 		
-	/*
-	@Test
-	void metodnamn_informationomtest_förväntatresultat() {
-		fail("Not yet implemented");
-	// Arrange
-	
-	// Act
-	
-	// Assert
-	 
-	}
-*/
+
 }
