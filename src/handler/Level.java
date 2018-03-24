@@ -19,7 +19,7 @@ public class Level {
 
 		builder = new StringBuilder();
 		try {
-			reader = new BufferedReader(new FileReader(new File("src/assets/level/" + name + ".mhl")));
+			reader = new BufferedReader(new FileReader(new File("src/asset/level/" + name + ".mhl")));
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException("Cant find level with name: " + name);
 		}
