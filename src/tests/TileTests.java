@@ -11,25 +11,28 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import asset.Entity;
+import asset.Floor;
+import asset.Tile;
+import asset.Wall;
 
 class TileTests {
 
 	@Test
-	void getSize_createTile_expect24() {
-		Tile e = new Entity("assets/wall.png",24);
+	void getSize_createTile_expect24() throws SizeLimitExceededException {
+		Tile e = new Wall("assets/wall.png",24);
 		int x = e.getSize();
 		assertEquals(x, 24);
 	}
 
 	@Test
 	void getX_createTileWithNegativ_expectException() {
-		assertThrows(SizeLimitExceededException.class, () -> Tile e = new Entity("assets/wall.png",-5));
+		assertThrows(SizeLimitExceededException.class, () -> new Wall("assets/wall.png",-5));
 	}
 	
 	@Test
 	@DisplayName("Test that the sprite string is set on creation")
-	void getSprite_createTile_expectSpriteString(){
-		Tile e = new Entity(10, 90, "assets/wall.png");
+	void getSprite_createTile_expectSpriteString() throws SizeLimitExceededException{
+		Tile e = new Floor("assets/wall.png", 24);
 		String sprite = e.getSprite();
 		assertEquals(sprite, "assets/wall.png");
 	}
