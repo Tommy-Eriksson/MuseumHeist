@@ -3,6 +3,7 @@ package handler;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import java.io.File;
 import java.io.FileReader;
 
@@ -11,7 +12,7 @@ public class Level {
 	private StringBuilder builder;
 	private BufferedReader reader;
 
-	private Object[][] level;
+	private Object[][] level = new Cell[25][25];
 
 	public Object[][] getLevel(String name) throws IOException {
 		name = name.toLowerCase();

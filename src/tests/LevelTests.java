@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +16,8 @@ class LevelTests {
 		Level level = new Level();
 		
 		String name = "test";
-		String expected = "[[LMain$Cell;@182decdb";
-		assertEquals(expected, level.getLevel(name).toString());
+		
+		assertEquals(25, level.getLevel(name).length);
 
 	}
 
@@ -27,8 +26,8 @@ class LevelTests {
 		Level level = new Level();
 		
 		String name = "test";
-		String expected = "[[LMain$Cell;@182decdb";
-		assertEquals(expected, level.getLevel(name).toString());		
+		
+		assertEquals(25, level.getLevel(name).length);		
 	}
 	
 	@Test
