@@ -4,20 +4,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
-
-import javafx.scene.layout.Pane;
 import logic.Game;
-import settings.Settings;
 
 class GameTests {
-
+	
 	@Test
-	void getPane_ExpectPane() throws FileNotFoundException {
+	void getPane_ExpectPane() throws Exception {
+		new MockJavaFx().start();
 		Game game = new Game();
-		assertNotNull(game.init("test"));
+		assertEquals("javafx.scene.layout.Pane",game.init("test").getClass().getName());
 	}
 
 	@Test
@@ -27,8 +24,10 @@ class GameTests {
 	}
 	
 	@Test
-	void getLevel_ExpectObjectArray() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	void getLevel_ExpectObjectArray() throws Exception {
+		new MockJavaFx().start();
 		Game game = new Game();
+		game.init("test");
 		Class<?> gameClass = game.getClass();
 		
 	    Field level = gameClass.getDeclaredField("level");

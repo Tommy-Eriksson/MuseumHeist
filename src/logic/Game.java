@@ -3,12 +3,18 @@ package logic;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.naming.SizeLimitExceededException;
+
+import asset.Floor;
+import asset.Tile;
+import asset.Wall;
 import handler.Level;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -33,8 +39,8 @@ public class Game {
 	private int xOffset = Settings.getOffsetX();
 	private int yOffset = Settings.getOffsetY();
 	
-	private Tile floorTile = new Floor();
-	private Tile wallTile = new Wall();
+	private Tile floorTile;
+	private Tile wallTile ;
 	
 	private static Node player;
 	private static Node laser;
@@ -62,10 +68,13 @@ public class Game {
 	}
 	
 	//TODO Create the gameboard, need tiles and entitys to make it easier
-	public Pane init(String name) throws FileNotFoundException {
+	public Pane init(String name) throws FileNotFoundException, SizeLimitExceededException {
 		root = new Pane();
 		canvas = new Canvas(width,height);
 		gc = canvas.getGraphicsContext2D();
+		
+		floorTile = new Floor("asset/background.png",24);
+		wallTile = new Wall("asset/wall.png",24);
 		
 		try {
 			level = levelHandler.getLevel(name);
@@ -73,7 +82,7 @@ public class Game {
 			throw new FileNotFoundException("Could not locate " + name);
 		}
 		
-		BackgroundImage bgImg = new BackgroundImage(new Image(floorTile.getImg()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
+		BackgroundImage bgImg = new BackgroundImage(new Image(floorTile.getSprite()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
 				BackgroundPosition.DEFAULT,
 				new BackgroundSize(tileSize, tileSize, false, false, false, false));
 		root.setBackground(new Background(bgImg));
@@ -85,7 +94,7 @@ public class Game {
 			for(int x = 0; x<level.length+2;x++) {
 				// If we are at the edges then we add a wall
 				if(y == 0 || y == level.length + 1) {
-					wall = mew ImageView(new Image(wallTile.getImg()));
+					wall = new ImageView(new Image(wallTile.getSprite()));
 					// Relocate wall to the right place
 					// The playfield is column and cell based so we need to translate
 					// cell index to x y in pixels based on window size and tile size
@@ -94,13 +103,13 @@ public class Game {
 				}
 				// If we are at the far right we add walls
 				if(x == level.length+1) {
-					wall = new ImageView(new Image(wallTile.getImg()));
+					wall = new ImageView(new Image(wallTile.getSprite()));
 					wall.relocate((x * tileSize) + xOffset - tileSize, (y * tileSize) + yOffset - tileSize);
 					root.getChildren().add(wall);
 				}
 			}
 			// Far left wall
-			wall = new ImageView(new Image(wallTile.getImg()));
+			wall = new ImageView(new Image(wallTile.getSprite()));
 			wall.relocate((0 * tileSize) + xOffset- tileSize, (y * tileSize) + yOffset - tileSize);
 			root.getChildren().add(wall);
 		}
