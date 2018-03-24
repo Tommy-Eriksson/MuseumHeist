@@ -8,19 +8,19 @@ public class Settings {
 	private static final int OFFSET_Y = 144;
 	private static final int TILE_SIZE = 24;
 	
-	public int getWidth() {
+	public static int getWidth() {
 		return WIDTH;
 	}
-	public int getHeight() {
+	public static int getHeight() {
 		return HEIGHT;
 	}
-	public int getOffsetX() {
+	public static int getOffsetX() {
 		return OFFSET_X;
 	}
-	public int getOffsetY() {
+	public static int getOffsetY() {
 		return OFFSET_Y;
 	}
-	public int getTileSize() {
+	public static int getTileSize() {
 		return TILE_SIZE;
 	}
 }
