@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.scene.layout.Pane;
 import logic.Game;
+import settings.Settings;
 
 class GameTests {
 
@@ -16,7 +17,7 @@ class GameTests {
 	void getPane_ExpectPane() {
 		Game game = new Game();
 		Pane root = new Pane();
-		assertEqual(root, game.init());
+		assertEqual(root, game.init("level1"));
 	}
 
 	@Test
