@@ -32,13 +32,23 @@ class EntityTests {
 	}
 
 	@Test
-	@DisplayName("Test that the entity is creatad within the bounds of with")
-	void entity_createEntityOutsideBounds_expectException(){
+	@DisplayName("Test that the entity is creatad within the bounds of witdh")
+	void entity_createEntityOutsideXBounds_expectException(){
 		
 	    Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
 	    	Entity e = new Entity(3000, 90, "assets/background.png");
 	    });
 
 	    assertEquals("x out of bounds", exception.getMessage());
+	}
+	@Test
+	@DisplayName("Test that the entity is creatad within the bounds of height")
+	void entity_createEntityOutsideYBounds_expectException(){
+		
+	    Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+	    	Entity e = new Entity(80, 9000, "assets/background.png");
+	    });
+
+	    assertEquals("y out of bounds", exception.getMessage());
 	}
 }
