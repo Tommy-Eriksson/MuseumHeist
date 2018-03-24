@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -14,12 +15,17 @@ import settings.Settings;
 class GameTests {
 
 	@Test
-	void getPane_ExpectPane() {
+	void getPane_ExpectPane() throws FileNotFoundException {
 		Game game = new Game();
-		Pane root = new Pane();
-		assertEqual(root, game.init("level1"));
+		assertNotNull(game.init("test"));
 	}
 
+	@Test
+	void getPaneLevelNotFound_Exception() throws FileNotFoundException {
+		Game game = new Game();
+		assertThrows(FileNotFoundException.class, () -> game.init("wrong"));
+	}
+	
 	@Test
 	void getLevel_ExpectObjectArray() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		Game game = new Game();

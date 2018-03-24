@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import handler.Level;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -20,6 +21,8 @@ public class Game {
 	private Pane root;
 	private Canvas canvas;
 	private GraphicsContext gc;
+	
+	private boolean running = false;
 	
 	private Level levelHandler = new Level();
 	private Object[][] level;
@@ -40,6 +43,23 @@ public class Game {
 	
 	private static Node wall;
 	private static Node floor;
+	
+	//TODO Gameloop logic
+	public void start() {
+		running = true;
+		new AnimationTimer() {
+			@Override
+			public void handle(long arg0) {
+				if(!running)
+					this.stop();
+				
+			}
+		}.start();
+	}
+	
+	public void stop() {
+		running = false;
+	}
 	
 	//TODO Create the gameboard, need tiles and entitys to make it easier
 	public Pane init(String name) throws FileNotFoundException {
@@ -86,5 +106,9 @@ public class Game {
 		}
 		
 		return root;
+	}
+	
+	public boolean getGameLoopStatus() {
+		return running;
 	}
 }
