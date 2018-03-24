@@ -114,6 +114,8 @@ public class Game {
 			root.getChildren().add(wall);
 		}
 		
+		// TODO Create board from level
+		
 		return root;
 	}
 	
