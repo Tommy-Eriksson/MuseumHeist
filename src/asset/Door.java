@@ -1,10 +1,7 @@
 package asset;
 
-public class Door implements Entity {
+public class Door extends Entity {
 
-	private int x;
-	private int y;
-	private final String sprite;
 	private String dir;
 	private boolean exit;
 	private int treasuresLeft;
@@ -46,27 +43,6 @@ public class Door implements Entity {
 
 	private void setOpen(boolean open) {
 		this.open = open;
-	}
-
-	@Override
-	public void relocate(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
-	}
-
-	@Override
-	public String getSprite() {
-		return sprite;
 	}
 
 }

@@ -2,29 +2,41 @@ package asset;
 
 import settings.Settings;
 
-public interface Entity {
+public abstract class Entity {
 
+	int x;
+	int y;
+	String sprite;
 
-	void relocate(int x, int y);
+	public void relocate(int x, int y) {
+		this.x = x;
+		this.y = y;
+	};
 
-	default int setX(int x) {
-		if (x > 0 && x < Settings.getWidth())
+	protected int setX(int x) {
+		if (x >= 0 && x <= Settings.getWidth())
 			return x;
 		else
 			throw new IllegalArgumentException("x out of bounds");
 	};
 
-	default int setY(int y) {
-		if (y > 0 && y < Settings.getHeight())
+	protected int setY(int y) {
+		if (y >= 0 && y <= Settings.getHeight())
 			return y;
 		else
 			throw new IllegalArgumentException("y out of bounds");
 	}
 	
-	int getX();
+	public int getX() {
+		return x;
+	}
 
-	int getY();
+	public int getY() {
+		return y;
+	};
 	
-	String getSprite();
+	public String getSprite() {
+		return sprite;
+	};
 	
 }

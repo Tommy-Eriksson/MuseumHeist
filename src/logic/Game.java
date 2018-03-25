@@ -5,12 +5,11 @@ import java.io.IOException;
 
 import javax.naming.SizeLimitExceededException;
 
-import asset.Floor;
-import asset.Tile;
-import asset.Wall;
+import asset.*;
 import handler.Level;
 import handler.Level.Cell;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -130,13 +129,47 @@ public class Game {
 					root.getChildren().add(wall);
 					break;
 				case 2: // Door
+					// Fetch level data
+					int[] data = ((Cell) level[y][x]).getData();
+
+					String dir;
+					if (data[0] == 4)
+						dir = "left";
+					else
+						dir = "right";
+
+					boolean exit;
+					if (data[1] == 0)
+						exit = false;
+					else
+						exit = true;
+
+					int treasuresLeft = data[2];
+					// Add door to level
+					level[y][x] = new Door(x, y, "asset/door.png", dir, exit, treasuresLeft);
+
+					//Set viewport of image, this is so we can use same image as both closed and open
+					Rectangle2D viewPort = new Rectangle2D(0, 0, tileSize, tileSize);
+					ImageView sprite = new ImageView();
+					sprite.setViewport(viewPort);
+					sprite.setImage(new Image(((Door) level[y][x]).getSprite()));
+					door = sprite;
+
+					// Place door at the right place and at the right rotation
+					if (dir.equals("left"))
+						door.relocate((x * tileSize) + xOffset - tileSize, (y * tileSize) + yOffset);
+					else {
+						door.setRotate(180);
+						door.relocate((x * tileSize) + xOffset + tileSize, (y * tileSize) + yOffset);
+					}
 					
+					root.getChildren().add(door);
 					break;
 				case 3: // Treasure
-					
+
 					break;
 				case 4: // Laser
-					
+
 					break;
 				default:
 					throw new NumberFormatException("Not valid level data");

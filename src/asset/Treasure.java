@@ -1,10 +1,7 @@
 package asset;
 
-public class Treasure implements Entity{
+public class Treasure extends Entity{
 
-	int x;
-	int y;
-	String sprite;
 	int points;
 	
 	public Treasure(int x, int y, String sprite, int points){
@@ -18,24 +15,4 @@ public class Treasure implements Entity{
 		return points;
 	}
 	
-	@Override
-	public void relocate(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
-	}
-	
-	@Override
-	public String getSprite() {
-		return sprite;
-	}
 }
