@@ -18,7 +18,7 @@ public class Entity {
 		this.sprite = sprite;
 		visible = true;
 		setX(x);
-		this.y = y;
+		setY(y);
 	}
 	
 	public boolean isVisible() {
@@ -39,6 +39,12 @@ public class Entity {
 		this.x = x;
 	}
 
+	private void setY(int y) {
+		
+		if (y < 0 || y > Settings.getHeight() - Settings.getTileSize()) throw new IllegalArgumentException("y out of bounds");
+		this.y = y;
+	}
+	
 	public int getX() {
 		return x;
 	}

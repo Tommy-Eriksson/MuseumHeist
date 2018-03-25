@@ -15,27 +15,20 @@ class LevelTests {
 	void loadLevel_ExpectLevel() throws IOException {
 		Level level = new Level();
 		
-		String name = "test";
-		
-		assertEquals(25, level.getLevel(name).length);
-
+		assertEquals(25, level.getLevel("test").length);
 	}
 
 	@Test
 	void loadLevelCapitalAndLowerCase_ExpectLevel() throws IOException {
 		Level level = new Level();
 		
-		String name = "test";
-		
-		assertEquals(25, level.getLevel(name).length);		
+		assertEquals(25, level.getLevel("test").length);		
 	}
 	
 	@Test
 	void loadWrongLevel_ExpectException() {
 		Level level = new Level();
-		
-		String name = "wrong";
 
-		assertThrows(FileNotFoundException.class, () -> level.getLevel(name));
+		assertThrows(FileNotFoundException.class, () -> level.getLevel("Wrong"));
 	}
 }
