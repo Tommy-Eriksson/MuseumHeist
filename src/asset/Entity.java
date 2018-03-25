@@ -2,7 +2,7 @@ package asset;
 
 import settings.Settings;
 
-public class Entity {
+public abstract class Entity {
 
 	private final String sprite;
 	private int x;
