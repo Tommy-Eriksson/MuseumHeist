@@ -12,7 +12,7 @@ public class Level {
 	private StringBuilder builder;
 	private BufferedReader reader;
 
-	private Object[][] level = new Cell[25][25];
+	private Object[][] level = new Object[25][25];
 
 	public Object[][] getLevel(String name) throws IOException {
 		name = name.toLowerCase();
@@ -72,8 +72,8 @@ public class Level {
 			throw new NumberFormatException("Invalid level data");
 		}
 	}
-
-	private class Cell {
+	
+	public class Cell {
 		int type;
 		int[] data;
 

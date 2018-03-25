@@ -13,7 +13,7 @@ public class Launcher extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		Game game = new Game();
-		stage.setScene(new Scene(game.init("test"),Settings.getWidth(),Settings.getHeight()));
+		stage.setScene(new Scene(game.init("level1"),Settings.getWidth(),Settings.getHeight()));
 		
 		stage.show();
 	}
