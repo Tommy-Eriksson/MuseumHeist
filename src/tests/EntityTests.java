@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import asset.Door;
+import asset.Player;
 import asset.Treasure;
 
 class EntityTests {
@@ -37,7 +38,7 @@ class EntityTests {
 	}
 
 	@Test
-	@DisplayName("Test that the entity is creatad within the bounds of witdh")
+	@DisplayName("Test that the entity is created within the bounds of witdh")
 	void entity_createEntityOutsideXBounds_expectException(){
 		
 	    Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -102,4 +103,40 @@ class EntityTests {
 		
 		assertEquals(10, e.getPoints());
 	}
+	
+	// Player tests
+	@Test
+	void getSpeed_createRunningPlayer_expect4() {
+		Player player = new Player(12,12, "assets/player.png", 4);
+		
+		assertEquals(4, player.getSpeed());
+	}
+	
+	@Test
+	void getSpeed_createWalkingPlayerByDefault_expect2() {
+		Player player = new Player(12,12, "assets/player.png");
+		
+		assertEquals(2, player.getSpeed());
+	}
+	
+	@Test
+	void setSpeed_getPlayerRunning_expect4() {
+		Player player = new Player(12,12, "assets/player.png", 2);
+		player.setSpeed(4);
+		
+		assertEquals(4, player.getSpeed());
+	}
+	
+	@Test
+	void movePlayer_expectX14Y14() {
+		Player player = new Player(10,10);
+		
+		player.move(14,14);
+		
+		assertEquals(14, player.getX());
+		assertEquals(14, player.getY());
+	}
+	
 }
+
+
