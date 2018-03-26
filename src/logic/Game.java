@@ -31,7 +31,7 @@ public class Game {
 	private boolean running = false;
 
 	private Level levelHandler = new Level();
-	private Object[][] level;
+	private static Object[][] level;
 
 	private int tileSize = Settings.getTileSize();
 	private int width = Settings.getWidth();
@@ -42,6 +42,7 @@ public class Game {
 	private Tile floorTile;
 	private Tile wallTile;
 
+	private static Player playerEntity;
 	private static Node player;
 	private static Node laser;
 	private static Node treasure;
@@ -139,16 +140,23 @@ public class Game {
 						dir = "right";
 
 					boolean exit;
-					if (data[1] == 0)
+					if (data[1] == 0) {
 						exit = false;
-					else
+						
+						// Place player at the entrance
+						playerEntity = new Player(x, y, "asset/player.png");
+						player = new ImageView(new Image(playerEntity.getSprite()));
+						player.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
+						root.getChildren().add(player);
+					} else
 						exit = true;
 
 					int treasuresLeft = data[2];
 					// Add door to level
 					level[y][x] = new Door(x, y, "asset/door.png", dir, exit, treasuresLeft);
 
-					//Set viewport of image, this is so we can use same image as both closed and open
+					// Set viewport of image, this is so we can use same image as both closed and
+					// open
 					Rectangle2D viewPort = new Rectangle2D(0, 0, tileSize, tileSize);
 					ImageView sprite = new ImageView();
 					sprite.setViewport(viewPort);
@@ -156,13 +164,13 @@ public class Game {
 					door = sprite;
 
 					// Place door at the right place and at the right rotation
-					if (dir.equals("left"))
+					if (dir.equals("left")) {
 						door.relocate((x * tileSize) + xOffset - tileSize, (y * tileSize) + yOffset);
-					else {
+					} else {
 						door.setRotate(180);
 						door.relocate((x * tileSize) + xOffset + tileSize, (y * tileSize) + yOffset);
 					}
-					
+
 					root.getChildren().add(door);
 					break;
 				case 3: // Treasure
@@ -182,5 +190,18 @@ public class Game {
 
 	public boolean getGameLoopStatus() {
 		return running;
+	}
+
+	public static Object getCell(int x, int y) {
+		return level[y][x];
+	}
+
+	public static int getLevelSize() {
+		return level.length;
+	}
+
+	public static int[] getPlayerPos() {
+		int[] playerPos = { playerEntity.getX(), playerEntity.getY() };
+		return playerPos;
 	}
 }

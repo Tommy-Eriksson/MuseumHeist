@@ -8,9 +8,6 @@ public class Player extends Entity {
 	/** The speed. */
 	private int speed = 2;
 	
-	/** The sprite. */
-	String sprite;
-	
 	/**
 	 * Instantiates a new player.
 	 *
@@ -22,6 +19,7 @@ public class Player extends Entity {
 	public Player(int x, int y, String sprite, int speed) {
 		this.x = setX(x);
 		this.y = setY(y);
+		this.sprite = sprite;
 		this.speed = speed;
 		}
 	
@@ -35,6 +33,7 @@ public class Player extends Entity {
 	public Player(int x, int y, String sprite) {
 		this.x = setX(x);
 		this.y = setY(y);
+		this.sprite = sprite;
 		}
 		
 	
