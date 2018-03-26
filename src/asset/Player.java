@@ -9,17 +9,20 @@ public class Player extends Entity {
 	private int speed = 2;
 	
 	/** The sprite. */
-	final String sprite = "assets/player.png";
+	String sprite;
 	
 	/**
 	 * Instantiates a new player.
 	 *
 	 * @param x the x
 	 * @param y the y
+	 * @param sprite the sprite
+	 * @param speed the speed
 	 */
-	public Player(int x, int y) {
+	public Player(int x, int y, String sprite, int speed) {
 		this.x = setX(x);
 		this.y = setY(y);
+		this.speed = speed;
 		}
 	
 	/**
@@ -34,20 +37,6 @@ public class Player extends Entity {
 		this.y = setY(y);
 		}
 		
-	/**
-	 * Instantiates a new player.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param sprite the sprite
-	 * @param speed the speed
-	 */
-	public Player(int x, int y, String sprite, int speed) {
-		this.x = setX(x);
-		this.y = setY(y);
-		this.speed = speed;
-		}
-
 	
 	/**
 	 * Gets the speed.

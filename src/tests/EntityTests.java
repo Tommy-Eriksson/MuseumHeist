@@ -129,7 +129,7 @@ class EntityTests {
 	
 	@Test
 	void movePlayer_expectX14Y14() {
-		Player player = new Player(10,10);
+		Player player = new Player(10,10,"assets/player.png");
 		
 		player.move(14,14);
 		
