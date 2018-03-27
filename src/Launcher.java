@@ -15,6 +15,8 @@ public class Launcher extends Application{
 		Game game = new Game();
 		stage.setScene(new Scene(game.init("level1"),Settings.getWidth(),Settings.getHeight()));
 		
+		game.start();
+		
 		stage.show();
 	}
 

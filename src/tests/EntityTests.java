@@ -15,6 +15,7 @@ import asset.Treasure;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import logic.Game;
+import settings.Settings;
 
 class EntityTests {
 
@@ -144,10 +145,11 @@ class EntityTests {
 
 	// Laser tests
 	@Test
-	void getX_createLaser_expect10() {
-		Laser laser = new Laser(10,10,"asset/laser.png","right",2,45,90,1);
-		
-		assertEquals(10,laser.getX());
+	void getX_createLaser_expectEquation() {
+		Laser laser = new Laser(10,10,"asset/laser.png",6,2,45,90,1);
+		int x = 10;
+		x = x + (Settings.getTileSize() / 4) * 3;
+		assertEquals(x,laser.getX());
 	}
 	
 	@Test
@@ -158,10 +160,10 @@ class EntityTests {
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		
-		Laser laser = new Laser(300,300,"asset/laser.png","right",2,45,90,1);
+		Laser laser = new Laser(300,300,"asset/laser.png",6,2,45,90,1);
 		
 		assertEquals(45,laser.getMaxDegree());
-		laser.update(gc);
+		laser.update();
 		assertEquals(45.2,laser.getMaxDegree(),0.3);
 	}
 	
@@ -173,10 +175,10 @@ class EntityTests {
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		
-		Laser laser = new Laser(300,300,"asset/laser.png","right",2,45,90,1);
+		Laser laser = new Laser(300,300,"asset/laser.png",6,2,45,90,1);
 		
 		assertEquals(0,laser.getX2(),0.3);
-		laser.update(gc);
+		laser.update();
 		assertEquals(332.47009225121934,laser.getX2(),0.3);
 	}
 	
@@ -188,13 +190,9 @@ class EntityTests {
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		
-		Laser laser = new Laser(300,300,"asset/laser.png","right",2,89,90,5);
-		
-		assertEquals(89,laser.getMaxDegree());
-		assertEquals(90,laser.getMinDegree());
-		laser.update(gc);
-		laser.update(gc);
-		assertEquals(90,laser.getMaxDegree());
-		assertEquals(89,laser.getMinDegree());
+		Laser laser = new Laser(300,300,"asset/laser.png", 6,2,89,90,1);
+		assertEquals(89,laser.getCurrentDegree());
+		laser.update();
+		assertEquals(88,laser.getCurrentDegree());
 	}
 }
