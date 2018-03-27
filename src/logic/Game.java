@@ -2,6 +2,7 @@ package logic;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.naming.SizeLimitExceededException;
 
@@ -46,6 +47,7 @@ public class Game {
 	private Tile wallTile;
 
 	private static Player playerEntity;
+	private static Treasure treasureEntity;;
 	private static Node player;
 	private static Node laser;
 	private static Node treasure;
@@ -91,7 +93,9 @@ public class Game {
 		root = new Pane();
 		canvas = new Canvas(width, height);
 		gc = canvas.getGraphicsContext2D();
-
+		Rectangle2D viewPort;
+		ImageView sprite;
+		
 		root.getChildren().add(canvas);
 
 		floorTile = new Floor("asset/background.png", 24);
@@ -179,8 +183,8 @@ public class Game {
 
 					// Set viewport of image, this is so we can use same image as both closed and
 					// open
-					Rectangle2D viewPort = new Rectangle2D(0, 0, tileSize, tileSize);
-					ImageView sprite = new ImageView();
+					viewPort = new Rectangle2D(0, 0, tileSize, tileSize);
+					sprite = new ImageView();
 					sprite.setViewport(viewPort);
 					sprite.setImage(new Image(((Door) level[y][x]).getSprite()));
 					door = sprite;
@@ -196,7 +200,19 @@ public class Game {
 					root.getChildren().add(door);
 					break;
 				case 3: // Treasure
+					data = ((Cell) level[y][x]).getData();
+					
+					level[y][x] = new Treasure((Settings.getTileSize() * x) + Settings.getOffsetX(),(Settings.getTileSize() * y) + Settings.getOffsetY(),"asset/treasure.png",data[0]);
 
+					viewPort = new Rectangle2D(0, tileSize*(new Random().nextInt(4)), tileSize, tileSize);
+					sprite = new ImageView();
+					sprite.setViewport(viewPort);
+					sprite.setImage(new Image(((Treasure) level[y][x]).getSprite()));
+					
+					treasure = sprite;
+					treasure.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
+					
+					root.getChildren().add(treasure);
 					break;
 				case 4: // Laser
 					data = ((Cell) level[y][x]).getData();
