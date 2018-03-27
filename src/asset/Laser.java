@@ -13,6 +13,9 @@ public class Laser extends Entity {
 	int minDegree;
 	int speed;
 
+	private boolean on = true;
+	private int currentTime = 0;
+
 	private double currentDegree;
 	private int targetDegree;
 	private double x2;
@@ -23,7 +26,7 @@ public class Laser extends Entity {
 		this.x = setX(x);
 		this.y = setY(y);
 		this.sprite = sprite;
-		this.time = time;
+		this.time = time * 100;
 		this.maxDegree = setDegree(maxDegree);
 		this.minDegree = setDegree(minDegree);
 		this.speed = speed;
@@ -69,7 +72,24 @@ public class Laser extends Entity {
 			targetDegree = maxDegree;
 		}
 
-		beam();
+		if (time != 0) {
+			if (currentTime < (time * 2) && on) {
+				beam();
+				currentTime++;
+				if (currentTime == time) {
+					on = false;
+					currentTime = 0;
+				}
+			} else if (currentTime < time && !on) {
+				currentTime++;
+				if (currentTime == time) {
+					on = true;
+					currentTime = 0;
+				}
+			}
+		} else
+			beam();
+
 	}
 
 	private void beam() {
@@ -145,16 +165,16 @@ public class Laser extends Entity {
 	private int setDegree(int degree) {
 		switch (degree) {
 		case 1:
-			degree = 135; //315
+			degree = 135; // 315
 			break;
 		case 2:
-			degree = 90; //270
+			degree = 90; // 270
 			break;
 		case 3:
 			degree = 45; // 225
 			break;
 		case 4:
-			degree = 180; //0
+			degree = 180; // 0
 			break;
 		case 6:
 			degree = 0; // 180
@@ -171,11 +191,11 @@ public class Laser extends Entity {
 		}
 		return degree;
 	}
-	
+
 	public int getCurrentDegree() {
 		return (int) this.currentDegree;
 	}
-	
+
 	public int getTargetDegree() {
 		return this.targetDegree;
 	}
