@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 
 import org.junit.jupiter.api.Test;
+
+import handler.InputHandler;
 import logic.Game;
 
 class GameTests {
@@ -13,21 +15,24 @@ class GameTests {
 	@Test
 	void getPane_ExpectPane() throws Exception {
 		new MockJavaFx().start();
+		InputHandler input = new InputHandler();
 		Game game = new Game();
-		assertEquals("javafx.scene.layout.Pane",game.init("test").getClass().getName());
+		assertEquals("javafx.scene.layout.Pane",game.init("test",input).getClass().getName());
 	}
 
 	@Test
 	void getPaneLevelNotFound_Exception() throws FileNotFoundException {
+		InputHandler input = new InputHandler();
 		Game game = new Game();
-		assertThrows(FileNotFoundException.class, () -> game.init("wrong"));
+		assertThrows(FileNotFoundException.class, () -> game.init("wrong",input));
 	}
 	
 	@Test
 	void getLevel_ExpectObjectArray() throws Exception {
 		new MockJavaFx().start();
+		InputHandler input = new InputHandler();
 		Game game = new Game();
-		game.init("test");
+		game.init("test",input);
 		Class<?> gameClass = game.getClass();
 		
 	    Field level = gameClass.getDeclaredField("level");

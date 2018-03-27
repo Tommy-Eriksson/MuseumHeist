@@ -12,6 +12,7 @@ import asset.Door;
 import asset.Laser;
 import asset.Player;
 import asset.Treasure;
+import handler.InputHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import logic.Game;
@@ -143,6 +144,29 @@ class EntityTests {
 		assertEquals(14, player.getY());
 	}
 
+	@Test
+	void playerRunning_true() {
+		Player player = new Player(10, 10, "asset/player.png");
+
+		player.run(true);
+
+		assertTrue(player.isRunning());
+	}
+	
+	
+	@Test
+	void playerRunThenNot_false() {
+		Player player = new Player(10, 10, "asset/player.png");
+		
+		player.run(true);
+
+		assertTrue(player.isRunning());
+		
+		player.run(false);
+
+		assertFalse(player.isRunning());
+				
+	}
 	// Laser tests
 	@Test
 	void getX_createLaser_expectEquation() {
@@ -155,8 +179,9 @@ class EntityTests {
 	@Test
 	void updateLaserSpeed2_expectDegreeIncrease() throws Exception {
 		new MockJavaFx().start();
+		InputHandler input = new InputHandler();
 		Game g = new Game();
-		g.init("level1");
+		g.init("level1",input);
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		
@@ -170,8 +195,9 @@ class EntityTests {
 	@Test
 	void updateLaserSpeed2_expectX2Increase() throws Exception {
 		new MockJavaFx().start();
+		InputHandler input = new InputHandler();
 		Game g = new Game();
-		g.init("level1");
+		g.init("level1",input);
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		
@@ -185,8 +211,9 @@ class EntityTests {
 	@Test
 	void updateLaserSpeed2_expectMaxDegreeAndMinDegreeToSwitch() throws Exception {
 		new MockJavaFx().start();
+		InputHandler input = new InputHandler();
 		Game g = new Game();
-		g.init("level1");
+		g.init("level1",input);
 		Canvas c = new Canvas();
 		GraphicsContext gc = c.getGraphicsContext2D();
 		

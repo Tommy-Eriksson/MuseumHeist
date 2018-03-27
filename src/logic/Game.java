@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.naming.SizeLimitExceededException;
 
 import asset.*;
+import handler.InputHandler;
 import handler.Level;
 import handler.Level.Cell;
 import javafx.animation.AnimationTimer;
@@ -30,6 +31,8 @@ public class Game {
 
 	private boolean running = false;
 
+	private InputHandler input;
+	private ProcessInput processInput = new ProcessInput();
 	private Level levelHandler = new Level();
 	private static Object[][] level;
 
@@ -60,6 +63,7 @@ public class Game {
 				if (!running)
 					this.stop();
 
+				processInput.process(input, playerEntity);
 				gc.clearRect(0, 0, Settings.getWidth(), Settings.getHeight());
 				update(gc);
 			}
@@ -81,7 +85,9 @@ public class Game {
 	}
 
 	// TODO Create the gameboard, need tiles and entitys to make it easier
-	public Pane init(String name) throws FileNotFoundException, SizeLimitExceededException {
+	public Pane init(String name, InputHandler input) throws FileNotFoundException, SizeLimitExceededException {
+		this.input = input;
+		
 		root = new Pane();
 		canvas = new Canvas(width, height);
 		gc = canvas.getGraphicsContext2D();
@@ -159,8 +165,9 @@ public class Game {
 						exit = false;
 
 						// Place player at the entrance
-						playerEntity = new Player(x, y, "asset/player.png");
+						playerEntity = new Player((x * tileSize) + xOffset, (y * tileSize) + yOffset, "asset/player.png");
 						player = new ImageView(new Image(playerEntity.getSprite()));
+						playerEntity.setImageView((ImageView) player);
 						player.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
 						root.getChildren().add(player);
 					} else
@@ -241,7 +248,9 @@ public class Game {
 		int[] playerPos = { playerEntity.getX(), playerEntity.getY() };
 		return playerPos;
 	}
-
+	public static Player getPlayerEntity() {
+		return playerEntity;
+	}
 	public static GraphicsContext getGC() {
 		return gc;
 	}
