@@ -26,12 +26,12 @@ import settings.Settings;
 public class Game {
 	private Pane root;
 	private Canvas canvas;
-	private GraphicsContext gc;
+	private static GraphicsContext gc;
 
 	private boolean running = false;
 
 	private Level levelHandler = new Level();
-	private Object[][] level;
+	private static Object[][] level;
 
 	private int tileSize = Settings.getTileSize();
 	private int width = Settings.getWidth();
@@ -42,6 +42,7 @@ public class Game {
 	private Tile floorTile;
 	private Tile wallTile;
 
+	private static Player playerEntity;
 	private static Node player;
 	private static Node laser;
 	private static Node treasure;
@@ -59,6 +60,8 @@ public class Game {
 				if (!running)
 					this.stop();
 
+				gc.clearRect(0, 0, Settings.getWidth(), Settings.getHeight());
+				update(gc);
 			}
 		}.start();
 	}
@@ -67,11 +70,23 @@ public class Game {
 		running = false;
 	}
 
+	private void update(GraphicsContext gc) {
+		for (int y = 0; y < level.length; y++) {
+			for (int x = 0; x < level.length; x++) {
+				if (level[y][x] instanceof Laser) {
+					((Laser) level[y][x]).update();
+				}
+			}
+		}
+	}
+
 	// TODO Create the gameboard, need tiles and entitys to make it easier
 	public Pane init(String name) throws FileNotFoundException, SizeLimitExceededException {
 		root = new Pane();
 		canvas = new Canvas(width, height);
 		gc = canvas.getGraphicsContext2D();
+
+		root.getChildren().add(canvas);
 
 		floorTile = new Floor("asset/background.png", 24);
 		wallTile = new Wall("asset/wall.png", 24);
@@ -115,22 +130,23 @@ public class Game {
 		}
 
 		// TODO Create board and add tiles and entitys to level
+		int[] data;
 		for (int y = 0; y < level.length; y++) {
 			for (int x = 0; x < level.length; x++) {
 				// If wall, add wall to root and make level easier to handle
 				switch (((Cell) level[y][x]).getType()) {
 				case 0: // Floor
-					level[y][x] = new Integer(0);
+					level[y][x] = 0;
 					break;
 				case 1: // Wall
-					level[y][x] = new Integer(1);
+					level[y][x] = 1;
 					wall = new ImageView(new Image(wallTile.getSprite()));
 					wall.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
 					root.getChildren().add(wall);
 					break;
 				case 2: // Door
 					// Fetch level data
-					int[] data = ((Cell) level[y][x]).getData();
+					data = ((Cell) level[y][x]).getData();
 
 					String dir;
 					if (data[0] == 4)
@@ -139,16 +155,23 @@ public class Game {
 						dir = "right";
 
 					boolean exit;
-					if (data[1] == 0)
+					if (data[1] == 0) {
 						exit = false;
-					else
+
+						// Place player at the entrance
+						playerEntity = new Player(x, y, "asset/player.png");
+						player = new ImageView(new Image(playerEntity.getSprite()));
+						player.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
+						root.getChildren().add(player);
+					} else
 						exit = true;
 
 					int treasuresLeft = data[2];
 					// Add door to level
 					level[y][x] = new Door(x, y, "asset/door.png", dir, exit, treasuresLeft);
 
-					//Set viewport of image, this is so we can use same image as both closed and open
+					// Set viewport of image, this is so we can use same image as both closed and
+					// open
 					Rectangle2D viewPort = new Rectangle2D(0, 0, tileSize, tileSize);
 					ImageView sprite = new ImageView();
 					sprite.setViewport(viewPort);
@@ -156,20 +179,42 @@ public class Game {
 					door = sprite;
 
 					// Place door at the right place and at the right rotation
-					if (dir.equals("left"))
+					if (dir.equals("left")) {
 						door.relocate((x * tileSize) + xOffset - tileSize, (y * tileSize) + yOffset);
-					else {
+					} else {
 						door.setRotate(180);
 						door.relocate((x * tileSize) + xOffset + tileSize, (y * tileSize) + yOffset);
 					}
-					
+
 					root.getChildren().add(door);
 					break;
 				case 3: // Treasure
 
 					break;
 				case 4: // Laser
+					data = ((Cell) level[y][x]).getData();
 
+					level[y][x] = new Laser((Settings.getTileSize() * x) + Settings.getOffsetX(),
+							(Settings.getTileSize() * y) + Settings.getOffsetY(), "asset/laser.png", data[0], data[1],
+							data[2], data[3], data[4]);
+
+					laser = new ImageView(new Image("asset/laser.png"));
+					switch (((Laser) level[y][x]).getDir()) {
+					case "up":
+						laser.setRotate(90);
+						break;
+					case "right":
+						laser.setRotate(180);
+						break;
+					case "down":
+						laser.setRotate(270);
+						break;
+					default:
+						break;
+					}
+
+					laser.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
+					root.getChildren().add(laser);
 					break;
 				default:
 					throw new NumberFormatException("Not valid level data");
@@ -182,5 +227,22 @@ public class Game {
 
 	public boolean getGameLoopStatus() {
 		return running;
+	}
+
+	public static Object getCell(int x, int y) {
+		return level[y][x];
+	}
+
+	public static int getLevelSize() {
+		return level.length;
+	}
+
+	public static int[] getPlayerPos() {
+		int[] playerPos = { playerEntity.getX(), playerEntity.getY() };
+		return playerPos;
+	}
+
+	public static GraphicsContext getGC() {
+		return gc;
 	}
 }
