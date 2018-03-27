@@ -5,7 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import handler.InputHandler;
+import logic.Collision;
 import logic.Game;
+import settings.Settings;
 
 class CollisionTests {
 
@@ -17,7 +19,7 @@ class CollisionTests {
 		game.init("lasertest",input);
 		Collision collision = new Collision();
 		
-		assertTrue(collision.collide(1,0,"right"));
+		assertTrue(collision.collide(24,0));
 	}
 
 	@Test
@@ -28,7 +30,7 @@ class CollisionTests {
 		game.init("lasertest",input);
 		Collision collision = new Collision();
 		
-		assertFalse(collision.collide(2,0,"right"));
+		assertFalse(collision.collide(1+Settings.getOffsetX(),0+Settings.getHeight())); // TODO FIX the test coords is wrong
 	}
 	
 	@Test
@@ -39,6 +41,6 @@ class CollisionTests {
 		game.init("lasertest",input);
 		Collision collision = new Collision();
 		
-		assertTrue(collision.collide(-1,0,"left"));
+		assertTrue(collision.collide(0,0));
 	}
 }
