@@ -170,7 +170,7 @@ public class Game {
 						exit = false;
 
 						// Place player at the entrance
-						playerEntity = new Player((x * tileSize) + xOffset, (y * tileSize) + yOffset,
+						playerEntity = new Player((x * tileSize) + xOffset+1, (y * tileSize) + yOffset+1,
 								"asset/player.png");
 						player = new ImageView(new Image(playerEntity.getSprite()));
 						playerEntity.setImageView((ImageView) player);
@@ -269,13 +269,11 @@ public class Game {
 	}
 
 	public static boolean checkTreasure(int x, int y) {
-		for (Node node:root.getChildren()) {
+		for (Node node : root.getChildren()) {
 			int x2 = ((int) node.getLayoutX()) - (Settings.getTileSize() / 2);
 			int y2 = ((int) node.getLayoutY()) - (Settings.getTileSize() / 2);
-			int x3 = ((int) node.getLayoutX()) + Settings.getTileSize()
-					- (Settings.getTileSize() / 2);
-			int y3 = ((int) node.getLayoutY()) + Settings.getTileSize()
-					- (Settings.getTileSize() / 2);
+			int x3 = ((int) node.getLayoutX()) + Settings.getTileSize() - (Settings.getTileSize() / 2);
+			int y3 = ((int) node.getLayoutY()) + Settings.getTileSize() - (Settings.getTileSize() / 2);
 			if (x > x2 && x < x3 && y > y2 && y < y3) {
 				if (node.getId().equals("treasure")) {
 					root.getChildren().remove(node);
@@ -292,16 +290,16 @@ public class Game {
 
 	public static void openDoor() {
 		int x = (doorExit.getX() * Settings.getTileSize()) + Settings.getOffsetX() + Settings.getTileSize();
-				int y =(doorExit.getY() * Settings.getTileSize()) + Settings.getOffsetY();
-		 
+		int y = (doorExit.getY() * Settings.getTileSize()) + Settings.getOffsetY();
+
 		Rectangle2D viewPort = new Rectangle2D(0, Settings.getTileSize(), Settings.getTileSize(),
 				Settings.getTileSize());
 		ImageView sprite = new ImageView();
 		sprite.setViewport(viewPort);
 		sprite.setImage(new Image(doorExit.getSprite()));
-		sprite.relocate(x,y);
+		sprite.relocate(x, y);
 		sprite.setRotate(180);
-		
+
 		for (int i = 0; i < root.getChildren().size(); i++) {
 			if (root.getChildren().get(i).getId() != null) {
 				if (root.getChildren().get(i).getId().equals("exit")) {
