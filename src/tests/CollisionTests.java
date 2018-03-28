@@ -30,7 +30,9 @@ class CollisionTests {
 		game.init("lasertest",input);
 		Collision collision = new Collision();
 		
-		assertFalse(collision.collide(1+Settings.getOffsetX(),0+Settings.getHeight())); // TODO FIX the test coords is wrong
+		assertFalse(collision.collide(1+Settings.getOffsetX(),
+				Settings.getHeight()-Settings.getTileSize()-Settings.getTileSize()-1)); 
+		
 	}
 	
 	@Test
@@ -43,4 +45,9 @@ class CollisionTests {
 		
 		assertTrue(collision.collide(0,0));
 	}
+	
+	
 }
+
+
+
