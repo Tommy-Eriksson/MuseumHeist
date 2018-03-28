@@ -30,6 +30,7 @@ public class Launcher extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		stage.setTitle("MuseumHeist");
 		input = new InputHandler();
 
 		Game game = new Game();
