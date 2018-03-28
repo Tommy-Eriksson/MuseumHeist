@@ -26,7 +26,7 @@ import javafx.scene.layout.Pane;
 import settings.Settings;
 
 public class Game {
-	private Pane root;
+	private static Pane root;
 	private Canvas canvas;
 	private static GraphicsContext gc;
 
@@ -47,7 +47,7 @@ public class Game {
 	private Tile wallTile;
 
 	private static Player playerEntity;
-	private static Treasure treasureEntity;;
+	private static Door doorExit;
 	private static Node player;
 	private static Node laser;
 	private static Node treasure;
@@ -89,13 +89,13 @@ public class Game {
 	// TODO Create the gameboard, need tiles and entitys to make it easier
 	public Pane init(String name, InputHandler input) throws FileNotFoundException, SizeLimitExceededException {
 		this.input = input;
-		
+
 		root = new Pane();
 		canvas = new Canvas(width, height);
 		gc = canvas.getGraphicsContext2D();
 		Rectangle2D viewPort;
 		ImageView sprite;
-		
+
 		root.getChildren().add(canvas);
 
 		floorTile = new Floor("asset/background.png", 24);
@@ -164,20 +164,24 @@ public class Game {
 					else
 						dir = "right";
 
+					int treasuresLeft = data[2];
 					boolean exit;
 					if (data[1] == 0) {
 						exit = false;
 
 						// Place player at the entrance
-						playerEntity = new Player((x * tileSize) + xOffset, (y * tileSize) + yOffset, "asset/player.png");
+						playerEntity = new Player((x * tileSize) + xOffset, (y * tileSize) + yOffset,
+								"asset/player.png");
 						player = new ImageView(new Image(playerEntity.getSprite()));
 						playerEntity.setImageView((ImageView) player);
 						player.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
+						player.setId("player");
 						root.getChildren().add(player);
-					} else
+					} else {
 						exit = true;
+						doorExit = new Door(x, y, "asset/door.png", dir, exit, treasuresLeft);
+					}
 
-					int treasuresLeft = data[2];
 					// Add door to level
 					level[y][x] = new Door(x, y, "asset/door.png", dir, exit, treasuresLeft);
 
@@ -197,21 +201,25 @@ public class Game {
 						door.relocate((x * tileSize) + xOffset + tileSize, (y * tileSize) + yOffset);
 					}
 
+					if (exit)
+						door.setId("exit");
 					root.getChildren().add(door);
 					break;
 				case 3: // Treasure
 					data = ((Cell) level[y][x]).getData();
-					
-					level[y][x] = new Treasure((Settings.getTileSize() * x) + Settings.getOffsetX(),(Settings.getTileSize() * y) + Settings.getOffsetY(),"asset/treasure.png",data[0]);
 
-					viewPort = new Rectangle2D(0, tileSize*(new Random().nextInt(4)), tileSize, tileSize);
+					level[y][x] = new Treasure((Settings.getTileSize() * x) + Settings.getOffsetX(),
+							(Settings.getTileSize() * y) + Settings.getOffsetY(), "asset/treasure.png", data[0]);
+
+					viewPort = new Rectangle2D(0, tileSize * (new Random().nextInt(4)), tileSize, tileSize);
 					sprite = new ImageView();
 					sprite.setViewport(viewPort);
 					sprite.setImage(new Image(((Treasure) level[y][x]).getSprite()));
-					
+
 					treasure = sprite;
 					treasure.relocate((x * tileSize) + xOffset, (y * tileSize) + yOffset);
-					
+
+					treasure.setId("treasure");
 					root.getChildren().add(treasure);
 					break;
 				case 4: // Laser
@@ -260,13 +268,59 @@ public class Game {
 		return level.length;
 	}
 
+	public static boolean checkTreasure(int x, int y) {
+		for (Node node:root.getChildren()) {
+			int x2 = ((int) node.getLayoutX()) - (Settings.getTileSize() / 2);
+			int y2 = ((int) node.getLayoutY()) - (Settings.getTileSize() / 2);
+			int x3 = ((int) node.getLayoutX()) + Settings.getTileSize()
+					- (Settings.getTileSize() / 2);
+			int y3 = ((int) node.getLayoutY()) + Settings.getTileSize()
+					- (Settings.getTileSize() / 2);
+			if (x > x2 && x < x3 && y > y2 && y < y3) {
+				if (node.getId().equals("treasure")) {
+					root.getChildren().remove(node);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static Door getDoorExit() {
+		return doorExit;
+	}
+
+	public static void openDoor() {
+		int x = (doorExit.getX() * Settings.getTileSize()) + Settings.getOffsetX() + Settings.getTileSize();
+				int y =(doorExit.getY() * Settings.getTileSize()) + Settings.getOffsetY();
+		 
+		Rectangle2D viewPort = new Rectangle2D(0, Settings.getTileSize(), Settings.getTileSize(),
+				Settings.getTileSize());
+		ImageView sprite = new ImageView();
+		sprite.setViewport(viewPort);
+		sprite.setImage(new Image(doorExit.getSprite()));
+		sprite.relocate(x,y);
+		sprite.setRotate(180);
+		
+		for (int i = 0; i < root.getChildren().size(); i++) {
+			if (root.getChildren().get(i).getId() != null) {
+				if (root.getChildren().get(i).getId().equals("exit")) {
+					root.getChildren().remove(i);
+					root.getChildren().add(sprite);
+				}
+			}
+		}
+	}
+
 	public static int[] getPlayerPos() {
 		int[] playerPos = { playerEntity.getX(), playerEntity.getY() };
 		return playerPos;
 	}
+
 	public static Player getPlayerEntity() {
 		return playerEntity;
 	}
+
 	public static GraphicsContext getGC() {
 		return gc;
 	}
