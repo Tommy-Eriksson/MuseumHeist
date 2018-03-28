@@ -56,7 +56,7 @@ public class Collision {
 			int playerX =Game.getPlayerPos()[0];
 			int doorExitLeft =Settings.getWidth()-Settings.getOffsetX()-Settings.getTileSize();
 			if(Game.getDoorExit().isOpen() && (playerX >= doorExitLeft-2 || playerX >= doorExitLeft-1))
-				System.out.println("avslut");
+				System.out.println("Level completed");
 		}
 
 		return false;
