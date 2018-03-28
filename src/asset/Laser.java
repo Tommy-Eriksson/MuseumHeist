@@ -134,7 +134,7 @@ public class Laser extends Entity {
 			}
 			if (x2 > playerX && x2 < playerX + Settings.getTileSize() && y2 > playerY
 					&& y2 < playerY + Settings.getTileSize()) {
-				// TODO Laser hit player!
+				System.out.println("Player HIT!");
 			}
 		}
 
