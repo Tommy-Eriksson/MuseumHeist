@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>editor</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="container" style="float:left"></div>
+<div id="ui" style="float:left; padding-left:24px; max-width:50%">
+	<p>Level Name:</p>
+	<input text id="name" value="unnamed">
+	<br>
+	<p>Current: </p>
+	<p id="current">floor</p>
+	<br>
+	<br>
+	<p>Floor empty, wall Black, door Brown, treasure Yellow, laser Red</p>
+	<br>
+	<br>
+	<p>Tile</p>
+	<button value="wall">Wall</button><button value="floor">Floor</button>
+	<br>
+	<p>Entity</p>
+	<button value="door">Door</button><button value="treasure">Treasure</button><button value="laser">Laser</button>
+		<!--
+		floor		0	-	data; tile
+		//wall		1	-	data; tile
+		//door		2	-	data; dir, exit, treasures
+		//treasure	3	-	data; points
+		//laser		4	-	data; dir, time, maxDegree, minDegree, speed	
+		-->
+	<form style="display:none" id="floor">
+		<p>Only got one tile atm</p>
+		<select name="tile">
+			<option value="0">Tile 1</option>
+			<option value="1">Tile 2</option>
+		</select>
+	</form>
+	<form id="wall">
+		<p>Only got one tile atm</p>
+		<select name="tile">
+			<option value="0">Tile 1</option>
+			<option value="1">Tile 2</option>
+		</select>
+	</form>
+	<form style="display:none" id="door">
+		<select name="dir">
+			<option value="4">Left</option>
+			<option value="6">Right</option>
+		</select>
+		<br>
+		<p>Door type</p>
+		<input type="radio" name="exit" value="0" checked>Entrance<br>
+		<input type="radio" name="exit" value="1">Exit<br>
+		<br>
+		How many treasures for the door to open:
+		<input type="number" name="treasure" value="1" min="1" max="25">	
+	</form>
+	<form style="display:none" id="treasure">
+		Treasure point value:
+		<input type="number" name="points" value="1" min="1">
+	</form>
+	<form style="display:none" id="laser">
+		Direction:
+		<select name="dir">
+			<option value="4" >Left</option>
+			<option value="8">Up</option>
+			<option value="6">Right</option>
+			<option value="2">Down</option>
+		</select>
+		<br>
+		Time:
+		<input type="number" value="0" name="Time" min="0">
+		<br>
+		Max Degree:
+		<select name="maxDegree" id="maxDegree">
+			<option value="4">Left</option>
+			<option value="7">Top Left</option>
+			<option value="8">Up</option>
+			<option value="9">Top Right</option>
+			<option value="6">Right</option>
+			<option value="3">Down Right</option>
+			<option value="2">Down</option>
+			<option value="1">Down Left</option>
+		</select>
+		<br>
+		Min Degree:
+		<select name="minDegree" id="minDegree">
+			<option value="4">Left</option>
+			<option value="7">Top Left</option>
+			<option value="8">Up</option>
+			<option value="9">Top Right</option>
+			<option value="6">Right</option>
+			<option value="3">Down Right</option>
+			<option value="2">Down</option>
+			<option value="1">Down Left</option>
+		</select>
+
+		<br>
+		Speed:
+		<input type="number" name="speed"  value="1" min="1">
+	</form>
+	<br>
+	<div style="border:1px solid black"><a id="download" href="#" download="test.txt">Download Map</a></div>
+
+</div>
+<script type="text/javascript">
+$(function() {
+    console.log( "ready!" );
+
+	var current = "wall";
+	var size = 32;
+	
+	$("a#download").on("click",function(){
+		var filename = $("#name").val() + ".mhl";
+	
+		
+		var levelString = 'museumHeist:';
+		for(var i=0;i<board.length;i++){
+			levelString += 'row'
+			for(var j=0;j<board.length;j++){
+				levelString += 'celltype:' + board[i][j].type + ':data:';
+				var data = board[i][j].data;
+				for(var k=0;k<data.length;k++){
+					levelString += data[k] + ',';
+				}
+				levelString += ":";
+			}
+		}
+			
+		$(this).attr("download", filename);
+		$(this).attr("href", "data:text/plain;charset=UTF-8," + encodeURIComponent(levelString));
+	});
+	
+	for(var y=0;y<25;y++){
+		$("#container").append("<div id='row"+y+"' style='display:flex;'>");
+		for(var x=0;x<25;x++){
+			$("#row" + y).append("<div class="+x+" style='box-sizing: border-box; border:1px solid black; height:" + size + "px; width:" + size + "px; display:inline-block; font-size:"+(size+2)+"px'>");
+			$("." + x).text(" ");
+		};
+	};
+	
+	$("button").on("click",function(){
+	
+		$("form").hide();
+	
+		$("#current").text(this.value);
+		current = $(this).val();
+		
+		$("#" + current).show();
+		
+	});
+	
+	$("#container div div").mouseover(function(){
+		if(drag){
+			addToLevel(this);
+		}
+	});
+	
+	$("#container div div").on("mousedown", function(){
+		addToLevel(this);
+	});
+	
+	drag = false;
+	
+	$(document).on("mousedown", function(){
+		drag = true;
+	})
+	
+	$(document).on("mouseup", function(){
+		drag = false;
+	})
+	
+	function addToLevel(element){
+		y = $(element).parent().attr("id");
+		y = y.substring(3);
+		x = $(element).attr("class");
+		$(element).css("border-bottom-left-radius", "0px");
+		$(element).css("border-bottom", "1px solid black");
+		$(element).css("border-bottom-right-radius", "0px");
+		$(element).css("border-left", "1px solid black");
+		$(element).css("border-right", "1px solid black");
+		$(element).css("border-top-left-radius", "0px");
+		$(element).css("border-top", "1px solid black");
+		$(element).css("border-top-right-radius", "0px");
+				
+		
+		// data(first int is type, [value of type]);
+		//floor		0	-	data; tile
+		//wall		1	-	data; tile
+		//door		2	-	data; dir, exit, treasures
+		//treasure	3	-	data; points
+		//laser		4	-	data; dir, time, minDegree, maxDegree, speed
+		
+		if(current == "floor"){
+			formData = $("#floor").serializeArray();
+			
+			$(element).css("background-color","white");
+			board[y][x] = new LevelData(0,formDataToArray(formData));
+		}
+		if(current == "wall"){
+			formData = $("#wall").serializeArray();
+			
+			$(element).css("background-color","black");
+			board[y][x] = new LevelData(1,formDataToArray(formData));
+		}
+		if(current =="door"){
+			formData = $("#door").serializeArray();
+			
+			$(element).css("background-color","brown");		
+			board[y][x] = new LevelData(2,formDataToArray(formData));
+		}
+		if(current =="treasure"){
+			formData = $("#treasure").serializeArray();
+			
+			$(element).css("background-color","yellow");	
+			board[y][x] = new LevelData(3,formDataToArray(formData));
+		}
+		if(current =="laser"){
+			formData = $("#laser").serializeArray();
+			
+			var max = $('#maxDegree').val();
+			var min = $('#minDegree').val();
+
+			for(var i=0;i<=1;i++){
+				var toTest = max;
+				if(i==1)
+					toTest = min;
+				
+				switch(toTest){
+					case "1":
+						$(element).css("border-bottom-left-radius", "15px");
+						break;
+					case "2":
+						$(element).css("border-bottom", "5px solid black");
+						break;
+					case "3":
+						$(element).css("border-bottom-right-radius", "15px");
+						break;
+					case "4":
+						$(element).css("border-left", "5px solid black");
+						break;
+					case "6":
+						$(element).css("border-right", "5px solid black");
+						break;
+					case "7":
+						$(element).css("border-top-left-radius", "15px");
+						break;
+					case "8":
+						$(element).css("border-top", "5px solid black");
+						break;
+					case "9":
+						$(element).css("border-top-right-radius", "15px");
+						break;
+				}
+			}
+			$(element).css("background-color","red");
+			board[y][x] = new LevelData(4,formDataToArray(formData));
+		}
+		
+		function formDataToArray(formData){
+			var array = [];
+			for(var i=0;i<formData.length;i++){
+				array[i] = formData[i].value;
+			}
+			return array;
+		}
+			
+	}
+	
+	function LevelData(type, data){
+		this.type = type;
+		this.data = data;
+	}
+	
+	var board = [];
+
+	for (var i = 0, l = 25; i < l; i++) {
+		board[i] = [];
+		for (var j = 0, l2 = 25; j < l2; j++) {
+			board[i][j] = new LevelData(0,[0]);
+		}
+	}
+	
+});
+</script>
+</body>
+</html>
