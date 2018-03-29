@@ -21,7 +21,6 @@ public class Launcher extends Application {
 		fc.setCurrentDirectory(workingDirectory);
 		fc.showOpenDialog(null);
 		File file = fc.getSelectedFile();
-		// This is where a real application would open the file.
 		System.out.println("Opening: " + file.getName());
 		levelName = file.getName().replaceFirst(".mhl", "");
 		
