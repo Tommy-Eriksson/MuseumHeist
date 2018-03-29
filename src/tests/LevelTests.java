@@ -22,7 +22,7 @@ class LevelTests {
 	void loadLevelCapitalAndLowerCase_ExpectLevel() throws IOException {
 		Level level = new Level();
 		
-		assertEquals(25, level.getLevel("test").length);		
+		assertEquals(25, level.getLevel("teSt").length);		
 	}
 	
 	@Test
